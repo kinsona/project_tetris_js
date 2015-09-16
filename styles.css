@@ -1,15 +1,17 @@
 .container {
-  max-width: 300px;
+  max-width: 240px;
   margin: 16px auto;
 }
+
 
 .header {
   margin-bottom: 24px;
   text-align: center;
 }
 
+
 .board {
-  width: 300px;
+  width: 240px;
 }
 
 
@@ -19,8 +21,8 @@
 
 
 .unit {
-  height: 30px;
-  width: 30px;
+  height: 24px;
+  width: 24px;
   margin: 0;
   display: inline-block;
   vertical-align: top;
@@ -37,4 +39,9 @@
 
 .active {
   border: 4px solid blue;
+}
+
+
+.clearing {
+  background-color: yellow;
 }

@@ -5,10 +5,12 @@ TETRIS.Piece = (function() {
 
   var pieces;
   var _activePiece;
+  var _rowsToClear;
 
 
   function init() {
     pieces = [];
+    _rowsToClear = 0;
   };
 
 
@@ -17,7 +19,10 @@ TETRIS.Piece = (function() {
     this.col = col;
     this.active = true;
     this.set = false;
+    this.clearing = false;
   };
+
+
 
 
   _PieceConstructor.prototype.detectCollision = function() {
@@ -61,6 +66,7 @@ TETRIS.Piece = (function() {
   _PieceConstructor.prototype.forceDown = function() {
     this.row = this.findMaxRow() - 2;
   };
+
 
 
 
@@ -111,6 +117,43 @@ TETRIS.Piece = (function() {
   };
 
 
+  function checkCompleteRows() {
+    for(var i = 0; i < TETRIS.Board.getHeight(); i++) {
+      var piecesInRow = _findPiecesInRow(i);
+
+      if (piecesInRow.length === 10) {
+        _rowsToClear++;
+        piecesInRow.each(_flagForClear);
+      };
+    };
+  };
+
+
+  function _findPiecesInRow(rowNumber) {
+    var piecesInRow = $(pieces).filter( function( index, piece) {
+      return (piece.row === rowNumber && piece.set)
+    });
+    return piecesInRow;
+  };
+
+
+  function _flagForClear(index, piece) {
+    piece.clearing = true;
+  };
+
+
+  function removeClearedRows() {
+    var rowsCleared = _rowsToClear;
+    _rowsToClear = 0;
+
+    pieces.forEach(function(piece, index) {
+      piece.row += rowsCleared;
+    })
+    //if row > maxrow delete
+    return rowsCleared;
+  };
+
+
   return {
     init: init,
     spawnPiece: spawnPiece,
@@ -119,7 +162,9 @@ TETRIS.Piece = (function() {
     stepDown: stepDown,
     slideAllLeft: slideAllLeft,
     slideAllRight: slideAllRight,
-    forceAllDown: forceAllDown
+    forceAllDown: forceAllDown,
+    checkCompleteRows: checkCompleteRows,
+    removeClearedRows: removeClearedRows
   };
 
 })();

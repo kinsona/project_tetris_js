@@ -4,6 +4,7 @@ var TETRIS = TETRIS || {};
 TETRIS.MainModule = (function() {
 
   var _gameloop;
+  var score;
 
 
   function init() {
@@ -13,18 +14,17 @@ TETRIS.MainModule = (function() {
 
     var rows = TETRIS.Board.getRows();
     TETRIS.View.drawBoard(rows);
-
-    //var pieces = TETRIS.Piece.getPieces();
-    //TETRIS.View.render(pieces);
   };
 
 
   function start() {
+    score = 0;
     _gameloop = setInterval(_tick, 100);
     TETRIS.View.enableControls();
   };
 
   function _tick() {
+
     if ( TETRIS.Piece.hasActivePiece() ) {
       TETRIS.Piece.stepDown();
     }
@@ -32,8 +32,12 @@ TETRIS.MainModule = (function() {
       TETRIS.Piece.spawnPiece();
     }
 
+    TETRIS.Piece.checkCompleteRows();
+
     var pieces = TETRIS.Piece.getPieces();
-    TETRIS.View.render(pieces);
+    TETRIS.View.render(pieces, score);
+
+    score += TETRIS.Piece.removeClearedRows();
   };
 
 

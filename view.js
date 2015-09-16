@@ -4,10 +4,12 @@ var TETRIS = TETRIS || {};
 TETRIS.View = (function() {
 
   var $board;
+  var $score;
 
 
   function init() {
     $board = $('.board');
+    $score = $('.header p');
     $('#start').on('click', TETRIS.MainModule.start );
   }
 
@@ -31,15 +33,16 @@ TETRIS.View = (function() {
   };
 
 
-  function render(pieces) {
+  function render(pieces, score) {
     if (pieces.length > 0) {
       _drawPieces(pieces)
     };
+    $score.text('Score: ' + score);
   };
 
 
   function _drawPieces(pieces) {
-    $board.children().children().removeClass('piece active');
+    $board.children().children().removeClass('piece active clearing');
     pieces.forEach(_drawSinglePiece);
   };
 
@@ -50,6 +53,9 @@ TETRIS.View = (function() {
     if (piece.active) {
       $piece.addClass('active');
     };
+    if (piece.clearing) {
+      $piece.addClass('clearing');
+    }
   };
 
 
