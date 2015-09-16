@@ -20,6 +20,35 @@ TETRIS.Piece = (function() {
   };
 
 
+  _PieceConstructor.prototype.detectCollision = function() {
+    var maxRow = this.findMaxRow();
+    return (this.row === maxRow);
+  };
+
+
+  _PieceConstructor.prototype.findMaxRow = function() {
+    var self = this;
+
+    var piecesInColumn = $(pieces).filter( function( index, object) {
+      return (object.col === self.col && object.row != self.row)
+    });
+
+    if (piecesInColumn.length > 0) {
+      return piecesInColumn.last()[0].row - 1;
+    }
+    else {
+      return TETRIS.Board.getHeight() -1;
+    };
+  };
+
+
+  _PieceConstructor.prototype.stop = function() {
+    this.active = false;
+    this.set = true;
+  };
+
+
+
   function spawnPiece() {
     _activePiece = new _PieceConstructor(0,_randomColumn());
     pieces.push(_activePiece);
@@ -43,9 +72,10 @@ TETRIS.Piece = (function() {
 
 
   function _stopPiece() {
-    if (_activePiece.row === TETRIS.Board.getHeight() - 1) {
-      _activePiece.active = false;
-      _activePiece.set = true;
+    // if any active piece
+    if (_activePiece.detectCollision() ) {
+      // stop all active pieces
+      _activePiece.stop();
       _activePiece = undefined;
     }
   }
