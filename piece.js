@@ -149,7 +149,9 @@ TETRIS.Piece = (function() {
     pieces.forEach(function(piece, index) {
       piece.row += rowsCleared;
     })
-    //if row > maxrow delete
+
+    pieces = pieces.filter( function(el, i) { return (el.clearing === false) } )
+
     return rowsCleared;
   };
 
