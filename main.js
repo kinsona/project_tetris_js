@@ -20,8 +20,8 @@ TETRIS.MainModule = (function() {
 
 
   function start() {
-    //start ticking
     _gameloop = setInterval(_tick, 100);
+    TETRIS.View.enableControls();
   };
 
   function _tick() {
@@ -34,15 +34,29 @@ TETRIS.MainModule = (function() {
 
     var pieces = TETRIS.Piece.getPieces();
     TETRIS.View.render(pieces);
-
-    //check collision with bottom
-
   };
+
+
+  function keydown() {
+    var input = event.which;
+    switch (input) {
+      case 37:
+        TETRIS.Piece.slideAllLeft();
+        break;
+      case 39:
+        TETRIS.Piece.slideAllRight();
+        break;
+      case 40:
+        TETRIS.Piece.forceAllDown();
+        break;
+    };
+  }
 
 
   return {
     init: init,
-    start: start
+    start: start,
+    keydown: keydown
   };
 
 })();

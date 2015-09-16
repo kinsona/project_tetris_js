@@ -48,6 +48,21 @@ TETRIS.Piece = (function() {
   };
 
 
+  _PieceConstructor.prototype.slideLeft = function() {
+    this.col = Math.max(this.col - 1, 0);
+  };
+
+
+  _PieceConstructor.prototype.slideRight = function() {
+    this.col = Math.min(this.col + 1, TETRIS.Board.getWidth() - 1 );
+  };
+
+
+  _PieceConstructor.prototype.forceDown = function() {
+    this.row = this.findMaxRow() - 2;
+  };
+
+
 
   function spawnPiece() {
     _activePiece = new _PieceConstructor(0,_randomColumn());
@@ -78,7 +93,22 @@ TETRIS.Piece = (function() {
       _activePiece.stop();
       _activePiece = undefined;
     }
-  }
+  };
+
+
+  function slideAllLeft() {
+    _activePiece.slideLeft();
+  };
+
+
+  function slideAllRight() {
+    _activePiece.slideRight();
+  };
+
+
+  function forceAllDown() {
+    _activePiece.forceDown();
+  };
 
 
   return {
@@ -86,7 +116,10 @@ TETRIS.Piece = (function() {
     spawnPiece: spawnPiece,
     hasActivePiece: hasActivePiece,
     getPieces: function() { return pieces },
-    stepDown: stepDown
+    stepDown: stepDown,
+    slideAllLeft: slideAllLeft,
+    slideAllRight: slideAllRight,
+    forceAllDown: forceAllDown
   };
 
 })();

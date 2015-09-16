@@ -32,7 +32,6 @@ TETRIS.View = (function() {
 
 
   function render(pieces) {
-
     if (pieces.length > 0) {
       _drawPieces(pieces)
     };
@@ -51,13 +50,25 @@ TETRIS.View = (function() {
     if (piece.active) {
       $piece.addClass('active');
     };
+  };
+
+
+  function enableControls() {
+    $(window).on('keydown', TETRIS.MainModule.keydown);
+  };
+
+
+  function disableControls() {
+    $(window).off('keydown');
   }
 
 
   return {
     init: init,
     drawBoard: drawBoard,
-    render: render
+    render: render,
+    enableControls: enableControls,
+    disableControls: disableControls
   };
 
 })();
