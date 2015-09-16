@@ -1,0 +1,21 @@
+.board {
+  width: 300px;
+
+}
+
+
+.row {
+
+}
+
+
+.unit {
+  height: 30px;
+  width: 30px;
+  margin: 0;
+  display: inline-block;
+  vertical-align: top;
+  box-sizing: border-box;
+  border: 1px solid #ddd;
+  background-color: lightgray;
+}
