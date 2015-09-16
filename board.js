@@ -3,25 +3,25 @@ var TETRIS = TETRIS || {};
 
 TETRIS.Board = (function() {
 
-  var _width,
-      _height,
-      _rows;
+  var width,
+      height,
+      rows;
 
   // row look like [,,,,,]
   // board look like [row,row,row,row]
   // 0,0 is top-left
 
   function init() {
-    _width = 10;
-    _height = 20;
-    _rows = _buildRows();
+    width = 10;
+    height = 20;
+    rows = _buildRows();
   };
 
 
   function _buildRows() {
     var tempRows = []
 
-    for (var i = 0; i < _height; i++) {
+    for (var i = 0; i < height; i++) {
       tempRows.push(_buildSingleRow(i));
     };
 
@@ -32,7 +32,7 @@ TETRIS.Board = (function() {
   function _buildSingleRow(rowNumber) {
     var row = [];
 
-    for (var colNumber = 0; colNumber < _width; colNumber++) {
+    for (var colNumber = 0; colNumber < width; colNumber++) {
       var newUnit = new GridUnit(rowNumber, colNumber);
       row.push(newUnit);
     };
@@ -47,14 +47,13 @@ TETRIS.Board = (function() {
   };
 
 
-  function getRows() {
-    return _rows;
-  };
 
 
   return {
     init: init,
-    getRows: getRows
+    getHeight: function() { return height },
+    getWidth: function() { return width },
+    getRows: function() { return rows }
   };
 
 })();

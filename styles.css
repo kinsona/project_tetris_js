@@ -1,6 +1,15 @@
+.container {
+  max-width: 300px;
+  margin: 16px auto;
+}
+
+.header {
+  margin-bottom: 24px;
+  text-align: center;
+}
+
 .board {
   width: 300px;
-
 }
 
 
@@ -18,4 +27,14 @@
   box-sizing: border-box;
   border: 1px solid #ddd;
   background-color: lightgray;
+}
+
+
+.piece {
+  background-color: lightblue;
+}
+
+
+.active {
+  border: 4px solid blue;
 }
