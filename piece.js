@@ -88,12 +88,9 @@ TETRIS.Piece = (function() {
 
 
   function spawnShape(ShapeModule) {
-    // pick shape
     _activePiece = []
-    var shape = _shapes[Math.floor( Math.random() * _shapes.length)];
 
     var shapeOffsets = ShapeModule.getShapeOffsets();
-
     var baseColumn = _randomColumn(shapeOffsets[0]);
 
     shapeOffsets.slice(1,5).forEach( function(offset, index) {

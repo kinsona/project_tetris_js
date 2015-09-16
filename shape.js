@@ -52,7 +52,7 @@ TETRIS.ShapeModule = (function() {
                       ];
 
 
-  var _shapes = [_shape4x1, _shape2x2, _shapeLeftL, _shapeRightL, _shapeLeftS, _shapeRightS];
+  var _shapes = [_shape4x1, _shape2x2, _shapeLeftL, _shapeRightL, _shapeLeftL, _shapeRightL];
 
   function getShapeOffsets() {
     return _shapes[Math.floor( Math.random() * _shapes.length)];
