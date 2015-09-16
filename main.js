@@ -19,8 +19,8 @@ TETRIS.MainModule = (function() {
 
   function start() {
     score = 0;
-    _gameloop = setInterval(_tick, 100);
     TETRIS.View.enableControls();
+    _gameloop = setInterval(_tick, 1000);
   };
 
   function _tick() {
@@ -29,7 +29,7 @@ TETRIS.MainModule = (function() {
       TETRIS.Piece.stepDown();
     }
     else {
-      TETRIS.Piece.spawnPiece();
+      TETRIS.Piece.spawnShape();
     }
 
     TETRIS.Piece.checkCompleteRows();
@@ -54,6 +54,9 @@ TETRIS.MainModule = (function() {
         TETRIS.Piece.forceAllDown();
         break;
     };
+
+    var pieces = TETRIS.Piece.getPieces();
+    TETRIS.View.render(pieces, score);;
   }
 
 

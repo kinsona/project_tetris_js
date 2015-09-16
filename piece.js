@@ -6,11 +6,13 @@ TETRIS.Piece = (function() {
   var pieces;
   var _activePiece;
   var _rowsToClear;
+  var _shapes;
 
 
   function init() {
     pieces = [];
     _rowsToClear = 0;
+    _shapes = ['2x2','4x1','L-left','L-right','S-left','S-right'];
   };
 
 
@@ -35,14 +37,14 @@ TETRIS.Piece = (function() {
     var self = this;
 
     var piecesInColumn = $(pieces).filter( function( index, object) {
-      return (object.col === self.col && object.row != self.row)
+      return (object.col === self.col && !object.active)
     });
 
     if (piecesInColumn.length > 0) {
       return piecesInColumn.last()[0].row - 1;
     }
     else {
-      return TETRIS.Board.getHeight() -1;
+      return TETRIS.Board.getHeight() - 1;
     };
   };
 
@@ -63,16 +65,52 @@ TETRIS.Piece = (function() {
   };
 
 
-  _PieceConstructor.prototype.forceDown = function() {
-    this.row = this.findMaxRow() - 2;
+  _PieceConstructor.prototype.forceDown = function(distance) {
+    this.row += (distance - 2);
   };
 
 
+  _PieceConstructor.prototype.validMove = function(columnMove) {
+    var self = this;
+    var targetColumn = self.col + columnMove;
+
+    var piecesInRow = $(pieces).filter( function( index, object) {
+      return (object.row === self.row && object.col === targetColumn && !object.active)
+    });
+
+    return (_columnInBounds(targetColumn) && piecesInRow.length === 0);
+  };
 
 
-  function spawnPiece() {
-    _activePiece = new _PieceConstructor(0,_randomColumn());
-    pieces.push(_activePiece);
+  function _columnInBounds(colNumber) {
+    return (colNumber >= 0 && colNumber < TETRIS.Board.getWidth() );
+  };
+
+
+  function spawnShape() {
+    // pick shape
+    _activePiece = []
+    var shape = _shapes[Math.floor( Math.random() * _shapes.length)];
+    var baseColumn = _randomColumn();
+
+    var shapeOffsets = [
+      {row: 3, col: 0},
+      {row: 2, col: 0},
+      {row: 1, col: 0},
+      {row: 0, col: 0}
+    ]
+
+    shapeOffsets.forEach( function(offset, index) {
+      spawnPiece(offset.row, baseColumn + offset.col);
+    })
+
+  };
+
+
+  function spawnPiece(row, col) {
+    newPiece = new _PieceConstructor(row,col);
+    _activePiece.push(newPiece);
+    pieces.push(newPiece);
   };
 
 
@@ -87,33 +125,43 @@ TETRIS.Piece = (function() {
 
 
   function stepDown() {
-    _activePiece.row++;
+    _activePiece.forEach(function(piece) { piece.row++; } );
     _stopPiece();
   };
 
 
   function _stopPiece() {
-    // if any active piece
-    if (_activePiece.detectCollision() ) {
-      // stop all active pieces
-      _activePiece.stop();
+    if (_activePiece.some(function(piece) { return piece.detectCollision() } ) ) {
+      _activePiece.forEach(function(piece) { piece.stop() } );
       _activePiece = undefined;
-    }
+    };
   };
 
 
   function slideAllLeft() {
-    _activePiece.slideLeft();
+    if (_activePiece.every(function(piece) { return piece.validMove(-1) } ) ) {
+      _activePiece.forEach(function(piece) {
+        piece.slideLeft();
+      });
+      _stopPiece();
+    };
   };
 
 
   function slideAllRight() {
-    _activePiece.slideRight();
+    if (_activePiece.every(function(piece) { return piece.validMove(1) } ) ) {
+      _activePiece.forEach(function(piece) {
+        piece.slideRight();
+      });
+      _stopPiece();
+    };
   };
 
 
   function forceAllDown() {
-    _activePiece.forceDown();
+    var lowPoint = _activePiece[0];
+    var distance = lowPoint.findMaxRow() - lowPoint.row;
+    _activePiece.forEach(function(piece) { piece.forceDown(distance) } );
   };
 
 
@@ -158,7 +206,7 @@ TETRIS.Piece = (function() {
 
   return {
     init: init,
-    spawnPiece: spawnPiece,
+    spawnShape: spawnShape,
     hasActivePiece: hasActivePiece,
     getPieces: function() { return pieces },
     stepDown: stepDown,

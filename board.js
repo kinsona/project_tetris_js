@@ -13,7 +13,7 @@ TETRIS.Board = (function() {
 
   function init() {
     width = 10;
-    height = 20;
+    height = 24;
     rows = _buildRows();
   };
 
