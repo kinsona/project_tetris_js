@@ -29,7 +29,7 @@ TETRIS.MainModule = (function() {
       TETRIS.Piece.stepDown();
     }
     else {
-      TETRIS.Piece.spawnShape();
+      TETRIS.Piece.spawnShape(TETRIS.ShapeModule);
     }
 
     TETRIS.Piece.checkCompleteRows();

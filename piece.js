@@ -87,20 +87,16 @@ TETRIS.Piece = (function() {
   };
 
 
-  function spawnShape() {
+  function spawnShape(ShapeModule) {
     // pick shape
     _activePiece = []
     var shape = _shapes[Math.floor( Math.random() * _shapes.length)];
-    var baseColumn = _randomColumn();
 
-    var shapeOffsets = [
-      {row: 3, col: 0},
-      {row: 2, col: 0},
-      {row: 1, col: 0},
-      {row: 0, col: 0}
-    ]
+    var shapeOffsets = ShapeModule.getShapeOffsets();
 
-    shapeOffsets.forEach( function(offset, index) {
+    var baseColumn = _randomColumn(shapeOffsets[0]);
+
+    shapeOffsets.slice(1,5).forEach( function(offset, index) {
       spawnPiece(offset.row, baseColumn + offset.col);
     })
 
@@ -114,8 +110,8 @@ TETRIS.Piece = (function() {
   };
 
 
-  function _randomColumn() {
-    return Math.floor( Math.random() * TETRIS.Board.getWidth() );
+  function _randomColumn(rangeOffset) {
+    return Math.floor( Math.random() * (rangeOffset.high - rangeOffset.low) );
   };
 
 
