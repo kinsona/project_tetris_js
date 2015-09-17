@@ -33,6 +33,11 @@ TETRIS.Piece = (function() {
   };
 
 
+  _PieceConstructor.prototype.findDownDistance = function() {
+    return (this.findMaxRow() - this.row);
+  };
+
+
   _PieceConstructor.prototype.findMaxRow = function() {
     var self = this;
 
@@ -66,7 +71,7 @@ TETRIS.Piece = (function() {
 
 
   _PieceConstructor.prototype.forceDown = function(distance) {
-    this.row += (distance - 2);
+    this.row += (distance - 1);
   };
 
 
@@ -152,9 +157,11 @@ TETRIS.Piece = (function() {
 
 
   function forceAllDown() {
-    var lowPoint = _activePiece[0];
-    var distance = lowPoint.findMaxRow() - lowPoint.row;
-    _activePiece.forEach(function(piece) { piece.forceDown(distance) } );
+    var minDownDistance = _activePiece.reduce(function(previous, current) {
+      return Math.min(previous, current.findDownDistance() )
+    }, _activePiece[0].findDownDistance() );
+
+    _activePiece.forEach(function(piece) { piece.forceDown(minDownDistance) } );
   };
 
 

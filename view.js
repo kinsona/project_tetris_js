@@ -15,7 +15,7 @@ TETRIS.View = (function() {
 
 
   function drawBoard(rows) {
-    rows.forEach(_drawRow);
+    rows.slice(4,24).forEach(_drawRow);
   };
 
 
@@ -48,14 +48,16 @@ TETRIS.View = (function() {
 
 
   function _drawSinglePiece(piece, index) {
-    $piece = $board.children().eq(piece.row).children().eq(piece.col);
-    $piece.addClass('piece');
-    if (piece.active) {
-      $piece.addClass('active');
+    if (piece.row > 3) {
+      $piece = $board.children().eq(piece.row - 4).children().eq(piece.col);
+      $piece.addClass('piece');
+      if (piece.active) {
+        $piece.addClass('active');
+      };
+      if (piece.clearing) {
+        $piece.addClass('clearing');
+      };
     };
-    if (piece.clearing) {
-      $piece.addClass('clearing');
-    }
   };
 
 

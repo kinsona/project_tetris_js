@@ -20,7 +20,7 @@ TETRIS.MainModule = (function() {
   function start() {
     score = 0;
     TETRIS.View.enableControls();
-    _gameloop = setInterval(_tick, 1000);
+    _gameloop = setInterval(_tick, 750);
   };
 
   function _tick() {
