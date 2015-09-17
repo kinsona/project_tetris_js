@@ -38,6 +38,7 @@ TETRIS.MainModule = (function() {
     TETRIS.View.render(pieces, score);
 
     score += TETRIS.Piece.removeClearedRows();
+    _checkGameOver();
   };
 
 
@@ -57,7 +58,20 @@ TETRIS.MainModule = (function() {
 
     var pieces = TETRIS.Piece.getPieces();
     TETRIS.View.render(pieces, score);;
-  }
+  };
+
+
+  function _checkGameOver() {
+    if (TETRIS.Piece.checkGameOver()) {
+      _endGame();
+    }
+  };
+
+
+  function _endGame() {
+    clearInterval(_gameloop);
+    TETRIS.View.renderEndGame();
+  };
 
 
   return {

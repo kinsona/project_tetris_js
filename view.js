@@ -68,7 +68,15 @@ TETRIS.View = (function() {
 
   function disableControls() {
     $(window).off('keydown');
-  }
+  };
+
+
+  function renderEndGame() {
+    disableControls();
+    var finalScore = $score.text();
+    $score.addClass('gameover').text('Game over! ' + finalScore);
+    $('.piece').addClass('loser');
+  };
 
 
   return {
@@ -76,7 +84,8 @@ TETRIS.View = (function() {
     drawBoard: drawBoard,
     render: render,
     enableControls: enableControls,
-    disableControls: disableControls
+    disableControls: disableControls,
+    renderEndGame: renderEndGame
   };
 
 })();

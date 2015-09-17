@@ -7,11 +7,13 @@ TETRIS.Piece = (function() {
   var _activePiece;
   var _rowsToClear;
   var _shapes;
+  var gameover;
 
 
   function init() {
     pieces = [];
     _rowsToClear = 0;
+    gameover = false;
     _shapes = ['2x2','4x1','L-left','L-right','S-left','S-right'];
   };
 
@@ -57,6 +59,9 @@ TETRIS.Piece = (function() {
   _PieceConstructor.prototype.stop = function() {
     this.active = false;
     this.set = true;
+    if (this.row < 4) {
+      gameover = true;
+    };
   };
 
 
@@ -214,7 +219,8 @@ TETRIS.Piece = (function() {
     slideAllRight: slideAllRight,
     forceAllDown: forceAllDown,
     checkCompleteRows: checkCompleteRows,
-    removeClearedRows: removeClearedRows
+    removeClearedRows: removeClearedRows,
+    checkGameOver: function() { return gameover }
   };
 
 })();

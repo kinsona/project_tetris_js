@@ -45,3 +45,13 @@
 .clearing {
   background-color: yellow;
 }
+
+
+.gameover {
+  color: red;
+}
+
+
+.loser {
+  background-color: red;
+}
